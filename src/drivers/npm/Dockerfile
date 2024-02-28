@@ -1,6 +1,4 @@
-FROM node:14-alpine
-
-MAINTAINER Wappalyzer <hello@wappalyzer.com>
+FROM node:18-alpine
 
 ENV WAPPALYZER_ROOT /opt/wappalyzer
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
@@ -19,13 +17,14 @@ WORKDIR "$WAPPALYZER_ROOT"
 
 COPY technologies ./technologies
 COPY \
-  cli.js \
+  server.js \
   categories.json \
   driver.js \
   package.json \
   wappalyzer.js \
   yarn.lock ./
 
+RUN yarn global add nodemon
 RUN yarn install
 
-ENTRYPOINT ["node", "cli.js"]
+ENTRYPOINT ["nodemon", "server.js"]
